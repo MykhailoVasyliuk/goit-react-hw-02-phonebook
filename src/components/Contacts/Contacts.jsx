@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { ContactsContainer } from './Contacts.styled';
 
 export class Contacts extends Component {
   state = {
@@ -19,8 +20,8 @@ export class Contacts extends Component {
       : contacts;
 
     return (
-      <div>
-        <label>
+      <ContactsContainer>
+        <label className="filter">
           Find contacts by name
           <input
             name="filter"
@@ -41,7 +42,7 @@ export class Contacts extends Component {
             );
           })}
         </ul>
-      </div>
+      </ContactsContainer>
     );
   }
 }
