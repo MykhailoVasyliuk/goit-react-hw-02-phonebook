@@ -1,12 +1,6 @@
 import styled from 'styled-components';
 
 export const ContactsContainer = styled.div`
-  .filter {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    width: 50%;
-  }
   ul {
     display: flex;
     flex-direction: column;

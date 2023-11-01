@@ -1,10 +1,14 @@
 import { Component } from 'react';
-import { Phonebook } from './Phonebook/Phonebook';
-import { Contacts } from './Contacts/Contacts';
+import { ContactForm } from './ContactForm/ContactForm';
+import { ContactList } from './ContactList/ContactList';
+import { Filter } from './Filter/Filter';
+
 export class App extends Component {
   state = {
     contacts: [],
+    filter: '',
   };
+
   formSubmitHandler = newContact => {
     const { contacts } = this.state;
     const isContactExist = contacts.some(
@@ -20,22 +24,38 @@ export class App extends Component {
       contacts: [...prevState.contacts, newContact],
     }));
   };
+  handlerFilterInput = value => {
+    this.setState({ filter: value });
+  };
   toRemoveContact = deletedElementId => {
-    const { contacts } = this.state;
-    const updateContacts = contacts.filter(
-      contact => contact.id !== deletedElementId
-    );
-    this.setState({ contacts: [...updateContacts] });
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(
+        contact => contact.id !== deletedElementId
+      ),
+    }));
   };
 
   render() {
+    const { contacts, filter } = this.state;
+    const filteredContacts = filter
+      ? contacts.filter(contact =>
+          contact.name.toLowerCase().includes(filter.toLocaleLowerCase())
+        )
+      : contacts;
+
     return (
       <>
         <h1>Phonebook</h1>
-        <Phonebook onSubmit={this.formSubmitHandler} />
+        <ContactForm onSubmit={this.formSubmitHandler} />
 
         <h2>Contacts</h2>
-        <Contacts data={this.state.contacts} onDelete={this.toRemoveContact} />
+        <Filter filter={filter} onFilter={this.handlerFilterInput} />
+        {contacts.length > 0 && (
+          <ContactList
+            data={filteredContacts}
+            onDelete={this.toRemoveContact}
+          />
+        )}
       </>
     );
   }
